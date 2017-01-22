@@ -1,14 +1,19 @@
 
-var app = new Vue({
+var calculator = new Vue({
   el: '#calc',
-  data: {
-    showReturns: false,
-    amount: 10000,
-    rate: 11.0,
-    years: 10,
-    yearData: []
+  data: function() {
+    return this.getInitialCalculatorState();
   },
   methods: {
+  	getInitialCalculatorState: function() {
+		return {
+			showReturns: false,
+		    amount: 10000,
+		    rate: 11.0,
+		    years: 10,
+		    yearData: []
+		};
+	},
   	calculateReturns: function() {
   		if (this.validateForm) {
   			this.computeReturns();
@@ -16,7 +21,12 @@ var app = new Vue({
   		}
   	},
   	resetForm: function() {
-  		this.showReturns = false;
+  		var initialData = this.getInitialCalculatorState();
+  		for (var property in initialData) {
+		    if (initialData.hasOwnProperty(property)) {
+		        this[property] = initialData[property];
+		    }
+		}
   	},
   	validateForm: function() {
   		var isValid = true;
@@ -25,19 +35,20 @@ var app = new Vue({
   		}
   	},
   	computeReturns: function() {
-  		var year, thisYear;
+  		var year, yearGain, thisYear;
   		var total = this.amount;
 
   		this.yearData = [];
 
   		for (year=1; year <= this.years; year++) {
-  			thisYear = { year: year };
-  			thisYear.yearGain = total * (this.rate/100);
-  			total += thisYear.yearGain;
-
-  			thisYear.totalMoney = total;
-  			thisYear.totalReturns = total - this.amount;
-
+  			yearGain = total * (this.rate/100);
+  			total += yearGain;
+  			thisYear = { 
+  				year: year,
+  				yearGain: yearGain,
+  				totalMoney: total,
+  				totalReturns: total - this.amount
+  			};
 			this.yearData.push(thisYear);
 		}
   	}
