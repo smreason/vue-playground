@@ -15,6 +15,20 @@ var calculator = new Vue({
   		return isNaN(this.rate) || this.rate <= 0;
   	}
   },
+  watch: {
+    amount: function(val, oldVal) {
+    	this.calculateReturns();
+    },
+    rate: function(val, oldVal) {
+    	this.calculateReturns();
+    },
+    years: function(val, oldVal) {
+    	this.calculateReturns();
+    },
+    timesCompound: function(val, oldVal) {
+    	this.calculateReturns();
+    }        
+  },
   methods: {
   	getInitialState: function() {
 		return {

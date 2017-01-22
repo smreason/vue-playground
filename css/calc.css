@@ -18,6 +18,10 @@ label {
 	display:block;
 }
 
+select {
+	margin-top:3px;
+}
+
 input.few-digits {
 	width:4em;
 }
