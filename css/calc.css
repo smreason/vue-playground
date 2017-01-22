@@ -1,0 +1,38 @@
+body {
+	background-color:#eee;
+	margin:20px;
+
+}
+
+main {
+	background-color:#fff;
+	padding:30px;
+}
+
+.form-group {
+	display:inline-block;
+	padding-left:15px;
+}
+
+label {
+	display:block;
+}
+
+input.few-digits {
+	width:4em;
+}
+
+th {
+	padding-right:25px;
+	text-align: center;
+}
+td {
+	padding-right:35px;
+	text-align: right;
+}
+td:first-child {
+	text-align:left;
+}
+td.yearGain {
+	padding-right: 55px;
+}
