@@ -1,4 +1,9 @@
+window.rate = 6.0;
+
 Vue.filter('currency', function (value) {
+	if (isNaN(value)) {
+		return value;
+	}
 	return "$" + value.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 });
 
@@ -15,28 +20,15 @@ var calculator = new Vue({
   		return isNaN(this.rate) || this.rate <= 0;
   	}
   },
-  watch: {
-    amount: function(val, oldVal) {
-    	this.calculateReturns();
-    },
-    rate: function(val, oldVal) {
-    	this.calculateReturns();
-    },
-    years: function(val, oldVal) {
-    	this.calculateReturns();
-    },
-    timesCompound: function(val, oldVal) {
-    	this.calculateReturns();
-    }        
-  },
   methods: {
   	getInitialState: function() {
 		return {
 			showReturns: false,
 		    amount: 10000,
-		    rate: 11.0,
+		    rate: window.rate || 5.0,
 		    years: 10,
 		    timesCompound: 4,
+		    dripPeriodDescription: "Quarterly",
 		    yearData: []
 		};
 	},
@@ -79,6 +71,7 @@ var calculator = new Vue({
   				periodData = { 
 	  				year: year,
 	  				yearGain: yearGain,
+	  				income: yearGain,
 	  				totalMoney: total,
 	  				totalReturns: total - this.amount
 	  			};
@@ -92,6 +85,7 @@ var calculator = new Vue({
 		  			periodData = { 
 		  				year: year,
 		  				yearGain: yearGain,
+		  				income: "$0 (DRIP)",
 		  				totalMoney: total,
 		  				totalReturns: total - this.amount
 		  			};
@@ -102,6 +96,28 @@ var calculator = new Vue({
   			}
 		}
 	}
+  },
+  watch: {
+    amount: function(val, oldVal) {
+    	if (this.showReturns) {
+    		this.calculateReturns();
+    	}
+    },
+    rate: function(val, oldVal) {
+    	if (this.showReturns) {
+    		this.calculateReturns();
+    	}
+    },
+    years: function(val, oldVal) {
+    	if (this.showReturns) {
+    		this.calculateReturns();
+    	}
+    },
+    timesCompound: function(val, oldVal) {
+    	if (this.showReturns) {
+    		this.calculateReturns();
+    	}
+    }        
   }
 });
 
