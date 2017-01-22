@@ -2,10 +2,18 @@
 var calculator = new Vue({
   el: '#calc',
   data: function() {
-    return this.getInitialCalculatorState();
+    return this.getInitialState();
+  },
+  computed: {
+  	isInvalidAmount: function() {
+  		return isNaN(this.amount) || this.amount <= 0;
+  	},
+  	isInvalidRate: function() {
+  		return isNaN(this.rate) || this.rate <= 0;
+  	}
   },
   methods: {
-  	getInitialCalculatorState: function() {
+  	getInitialState: function() {
 		return {
 			showReturns: false,
 		    amount: 10000,
@@ -15,13 +23,13 @@ var calculator = new Vue({
 		};
 	},
   	calculateReturns: function() {
-  		if (this.validateForm) {
+  		if (this.validateForm()) {
   			this.computeReturns();
   			this.showReturns = true;
   		}
   	},
   	resetForm: function() {
-  		var initialData = this.getInitialCalculatorState();
+  		var initialData = this.getInitialState();
   		for (var property in initialData) {
 		    if (initialData.hasOwnProperty(property)) {
 		        this[property] = initialData[property];
@@ -30,9 +38,13 @@ var calculator = new Vue({
   	},
   	validateForm: function() {
   		var isValid = true;
-  		if (isNaN(amount)) {
+  		if (this.isInvalidAmount) {
   			isValid = false;
   		}
+  		if (this.isInvalidRate) {
+  			isValid = false;
+  		}
+  		return isValid;
   	},
   	computeReturns: function() {
   		var year, yearGain, thisYear;
