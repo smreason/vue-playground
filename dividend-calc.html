@@ -16,11 +16,11 @@
 		<form v-on:submit.prevent>
 			<div class="form-group">
 				<label for="amount-invested">Amount Invested</label>
-				$<input v-model="amount" v-bind:class="{ invalid: isInvalidAmount }" type="number" id="amount-invested">
+				$<input v-model="amount" v-bind:class="{ invalid: isInvalidAmount }" type="number" step="0.01" id="amount-invested">
 			</div>
 			<div class="form-group">
 				<label for="divident-rate">Dividend Yield</label>
-				<input v-model="rate" v-bind:class="{ invalid: isInvalidRate }" class="few-digits" type="number" id="divident-rate">%
+				<input v-model="rate" v-bind:class="{ invalid: isInvalidRate }" class="few-digits" type="number" step="0.01" id="divident-rate">%
 			</div>
 			<div class="form-group">
 				<label for="number-years">Number of Years</label>
@@ -33,8 +33,20 @@
 				</select>
 			</div>
 			<div class="form-group">
+				<label for="times-compounded">Annual Compounds</label>
+				<select v-model="timesCompound" id="times-compounded">
+					<option>0</option>
+					<option>1</option>
+					<option>4</option>
+					<option>12</option>
+				</select>
+			</div>
+			<div class="button-group">
 				<button id="calculate" v-on:click="calculateReturns">Calculate Returns</button>
 				<button id="reset" v-on:click="resetForm">Reset</button>
+				<button v-if="yearData.length > 0" v-on:click="showReturns = !showReturns" class="toggler">
+					<span v-if="showReturns">V</span><span v-else>O</span>
+				</button>
 			</div>
 		</form>
 		<div v-show="showReturns" class="returns">

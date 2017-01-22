@@ -26,20 +26,31 @@ input.invalid {
 	color:#d9534f;
 	outline-color:red;
 }
-tr:odd {
+.toggler {
+	margin-left:30px;
+}
+.returns {
+	border-top:1px solid #ccc;
+	margin-top:1em;
+	padding-top:1em;
+}
+tbody tr:nth-child(odd) {
 	background-color:#eee;
 }
 th {
-	padding-right:25px;
+	padding:5px 45px 5px 5px;
 	text-align: center;
 }
 td {
-	padding-right:35px;
+	padding:5px 55px 5px 5px;
 	text-align: right;
 }
 td:first-child {
 	text-align:left;
 }
 td.yearGain {
-	padding-right: 55px;
+	padding-right: 65px;
+}
+tr:last-of-type > td:last-of-type {
+	color:green;
 }
