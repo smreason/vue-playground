@@ -29,7 +29,7 @@ var calculator = new Vue({
 			showReturns: false,
 		    amount: 10000,
 		    rate: window.dividendRate || 5.0,
-		    rateGrowth: 0,
+		    rateGrowth: window.dividendRateGrowth || 0,
 		    years: 10,
 		    timesCompound: 4,
 		    noDrip: false, 
@@ -77,14 +77,18 @@ var calculator = new Vue({
 			currentRateSum = 0;
 
 			for (period=1; period <= timesCompound; period++) {
+
+				// Does the rate increase happen before or after the gain computation???
 				currentRate = currentRate + (currentRate * (this.rateGrowth/100)/timesCompound);
 				currentRateSum += currentRate;
+
 				if (this.noDrip) {
 					periodGain = this.amount * (currentRate/100)/timesCompound;
 				}
 				else {
 					periodGain = total * (currentRate/100)/timesCompound;
 				}
+
 				yearGain += periodGain;
 	  			total += periodGain;
 	  			periodData = { 
@@ -94,6 +98,7 @@ var calculator = new Vue({
 	  				totalReturns: total - this.amount,
 	  				avgRate: (currentRateSum / timesCompound).toFixed(2)
 	  			};
+
 	  			if (period === timesCompound) {
 	  				this.yearData.push(periodData);
 	  			}
