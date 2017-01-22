@@ -11,7 +11,7 @@
 </head>
 <body>
 	<main>
-		<h3>Dividend Calculator</h3>
+		<h3>Dividend Reinvestment Calculator</h3>
 		<section id="calc">
 		<form v-on:submit.prevent>
 			<div class="form-group">
@@ -23,7 +23,11 @@
 				<input v-model="rate" v-bind:class="{ invalid: isInvalidRate }" class="few-digits" type="number" step="0.01" id="divident-rate">%
 			</div>
 			<div class="form-group">
-				<label for="number-years">Number of Years</label>
+				<label for="divident-growth">Dividend Growth</label>
+				<input v-model="rateGrowth" v-bind:class="{ invalid: isInvalidRateGrowth }" class="few-digits" type="number" step="0.01" id="divident-growth">%
+			</div>
+			<div class="form-group">
+				<label for="number-years">Years</label>
 				<select v-model="years" id="number-years">
 					<option>5</option>
 					<option>10</option>
@@ -33,9 +37,12 @@
 				</select>
 			</div>
 			<div class="form-group">
+				<label for="no-drip">No DRIP</label>
+				<input v-model="noDrip" type="checkbox" id="no-drip">
+			</div>
+			<div class="form-group">
 				<label for="times-compounded">Reinvestment Period</label>
 				<select v-model="timesCompound" id="times-compounded">
-					<option value="0">No DRIP</option>
 					<option value="4">Quarterly</option>
 					<option value="1">Yearly</option>
 					<option value="12">Monthy</option>
@@ -50,24 +57,27 @@
 			</div>
 		</form>
 		<div v-show="showReturns" class="returns">
-			<p>Returns achieved from investing <strong>{{ amount | currency }}</strong> at a <strong>{{ rate }}%</strong> rate for <strong>{{ years }}</strong> years.</p>
+			<p>
+				Returns achieved from investing <strong>{{ amount | currency }}</strong> at a <strong>{{ rate }}%</strong> rate for <strong>{{ years }}</strong> years
+				(<span v-if="noDrip">no</span><span v-else>with</span> DRIP).
+			</p>
 			<table>
 				<thead>
 					<tr>
 						<th>Year</th>
-						<th>This Year's Return</th>
-						<th>This Year's Income</th>
+						<th>Avg Rate</th>
+						<th>Year's Return</th>
 						<th>Total Returns</th>
-						<th>Total Amount</th>
+						<th>Total Value</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="year in yearData">
 						<td>{{ year.year }}</td>
+						<td class="yearGain">{{ year.avgRate }}%</td>
 						<td class="yearGain">{{ year.yearGain | currency }}</td>
-						<td class="yearGain">{{ year.income | currency }}</td>
 						<td>{{ year.totalReturns | currency }}</td>
-						<td>{{ year.totalMoney | currency }}</td>
+						<td>{{ year.totalValue | currency }}</td>
 					</tr>
 				</tbody>
 			</table>

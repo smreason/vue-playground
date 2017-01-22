@@ -23,6 +23,7 @@ select {
 }
 
 input.few-digits {
+	margin-left:20px;
 	width:4em;
 }
 
