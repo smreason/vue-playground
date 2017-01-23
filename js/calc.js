@@ -1,8 +1,8 @@
 window.dividendRate = 2.5;
 
 Vue.filter('currency', function (value) {
-	if (isNaN(value)) {
-		return value;
+	if (!value || isNaN(value)) {
+		return value || "0";
 	}
 	return "$" + value.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 });
@@ -108,7 +108,7 @@ var calculator = new Vue({
   },
   watch: {
     amount: function(val, oldVal) {
-    	if (this.showReturns) {
+    	if (this.showReturns && !this.isInvalidAmount) {
     		this.calculateReturns();
     	}
     },
